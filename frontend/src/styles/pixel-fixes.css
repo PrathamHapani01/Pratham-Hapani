@@ -1,0 +1,268 @@
+/* ==========================================================================
+   pixel-fixes.css — drop-in fixes + upgrades for the pixel portfolio
+   Import AFTER your existing styles. Needs the tokens from design.md:
+   --bg --bg-check --surface --ink --accent --accent-dark --accent-soft
+   ========================================================================== */
+
+:root {
+  --font-display: 'Pixelify Sans', 'Silkscreen', monospace;
+  --font-label: 'Silkscreen', 'Press Start 2P', monospace;
+  --font-body: 'VT323', 'Pixelify Sans', monospace;
+}
+
+html { scroll-behavior: auto; }
+section[id] { scroll-margin-top: 112px; }          /* nav no longer hides window title bars */
+img, canvas { image-rendering: pixelated; }
+
+/* ---------- 1. WINDOWS: notched pixel border, NO clip-path, NO big tilt ---------- */
+.px-window {
+  position: relative;
+  margin: 4px;                                       /* room for the 4px ring */
+  background: var(--surface);
+  /* the ring draws a pixel-notched border (corners stay empty = pixel look) */
+  box-shadow:
+    0 -4px 0 0 var(--ink), 0 4px 0 0 var(--ink),
+    -4px 0 0 0 var(--ink), 4px 0 0 0 var(--ink);
+  /* hard shadow that follows the notched shape exactly */
+  filter: drop-shadow(8px 8px 0 var(--ink));
+  transition: transform .2s steps(2);
+}
+.px-window.is-lift:hover { transform: translate(-2px, -2px); filter: drop-shadow(10px 10px 0 var(--ink)); }
+/* Only tiny decorative windows may tilt, and only the WHOLE window (never title bar alone) */
+.px-window.tilt-l { transform: rotate(-0.6deg); }
+.px-window.tilt-r { transform: rotate(0.6deg); }
+.px-window.tilt-l:hover, .px-window.tilt-r:hover { transform: none; }
+
+.px-title {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  min-height: 40px; padding: 6px 12px;
+  background: var(--accent); color: #fff;
+  font: 400 13px/1 var(--font-label); letter-spacing: .12em; text-transform: uppercase;
+}
+.px-title-dots { display: flex; gap: 8px; }
+.px-dot {                                           /* octagon-looking pixel buttons */
+  width: 18px; height: 18px; margin: 2px; border: 0; cursor: pointer; padding: 0;
+  background: var(--accent-soft); color: var(--ink);
+  box-shadow: -2px 0 0 0 var(--ink), 2px 0 0 0 var(--ink), 0 -2px 0 0 var(--ink), 0 2px 0 0 var(--ink);
+  font: 10px/18px var(--font-label); text-align: center;
+}
+.px-dot:hover { background: #fff; }
+.px-body { padding: 24px; }
+
+/* ---------- 2. NAVBAR: compact, never covers content ---------- */
+.nav {
+  position: sticky; top: 12px; z-index: 50; height: 60px; margin: 0 auto 32px;
+  max-width: 1200px; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; background: var(--surface);
+  box-shadow: 0 -4px 0 0 var(--ink), 0 4px 0 0 var(--ink), -4px 0 0 0 var(--ink), 4px 0 0 0 var(--ink);
+  filter: drop-shadow(6px 6px 0 var(--ink));
+}
+.nav a { font: 12px var(--font-label); letter-spacing: .1em; color: var(--ink); text-decoration: none; padding: 8px 10px; }
+.nav a[aria-current='true'], .nav a:hover { box-shadow: inset 0 -4px 0 0 var(--accent); }
+.sound-label { display: none; }                      /* removes the stray "OFF" text seen at left */
+
+/* ---------- 3. HERO: grid layout instead of absolutely-placed windows ---------- */
+.hero {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 48px; align-items: center; padding: 24px 0 8px;
+}
+.hero-kicker {
+  display: inline-block; padding: 6px 10px; margin-bottom: 16px; background: var(--ink); color: var(--surface);
+  font: 12px var(--font-label); letter-spacing: .14em;
+}
+.hero-kicker::before { content: ''; display: inline-block; width: 8px; height: 8px; margin-right: 8px; background: #5BE37D; animation: blink 1s steps(2) infinite; }
+.hero-name {
+  margin: 0; font: 700 clamp(56px, 10vw, 132px)/.9 var(--font-display); letter-spacing: -.02em;
+  color: var(--accent); text-transform: uppercase;
+  text-shadow: 4px 4px 0 var(--accent-dark), 8px 8px 0 var(--ink);
+}
+.hero-name span { display: inline-block; animation: letter-wave 2.4s steps(6) infinite; animation-delay: calc(var(--i) * 140ms); }
+.hero-role { margin: 20px 0 8px; min-height: 36px; font: 400 28px var(--font-body); color: var(--ink); }
+.hero-role .caret { display: inline-block; width: 12px; height: 24px; margin-left: 4px; background: var(--accent); vertical-align: -3px; animation: blink 1s steps(2) infinite; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 20px; margin: 24px 0; }
+.hero-stats { display: flex; gap: 16px; flex-wrap: wrap; }
+.stat { padding: 10px 14px; background: var(--surface); box-shadow: 0 -3px 0 0 var(--ink), 0 3px 0 0 var(--ink), -3px 0 0 0 var(--ink), 3px 0 0 0 var(--ink); margin: 3px; }
+.stat b { display: block; font: 700 28px var(--font-display); color: var(--accent); }
+.stat small { font: 10px var(--font-label); letter-spacing: .1em; color: var(--ink); }
+
+/* scene window (the pixel workstation canvas) */
+.scene-wrap canvas { display: block; width: 100%; aspect-ratio: 3 / 2; background: var(--bg); }
+.scene-hint { padding: 8px 12px; font: 11px var(--font-label); letter-spacing: .08em; color: var(--ink); background: var(--bg-check); }
+
+/* ---------- 4. BUTTONS ---------- */
+.px-btn {
+  position: relative; display: inline-block; padding: 14px 22px; border: 0; cursor: pointer; text-decoration: none;
+  background: var(--accent); color: #fff; font: 13px var(--font-label); letter-spacing: .1em; text-transform: uppercase;
+  box-shadow: 0 -3px 0 0 var(--ink), 0 3px 0 0 var(--ink), -3px 0 0 0 var(--ink), 3px 0 0 0 var(--ink), 6px 6px 0 0 var(--ink);
+  margin: 3px; transition: transform .12s steps(2);
+}
+.px-btn:hover { transform: translate(-2px, -2px); }
+.px-btn:active { transform: translate(4px, 4px); box-shadow: 0 -3px 0 0 var(--ink), 0 3px 0 0 var(--ink), -3px 0 0 0 var(--ink), 3px 0 0 0 var(--ink); }
+.px-btn.is-ghost { background: var(--surface); color: var(--ink); }
+.px-btn[aria-disabled='true'] {                       /* "coming soon" instead of a dead-looking button */
+  background: var(--bg-check); color: var(--ink); opacity: .75; cursor: not-allowed;
+  background-image: repeating-linear-gradient(45deg, transparent 0 6px, rgba(0,0,0,.08) 6px 8px);
+}
+.px-btn::after {                                      /* stepped shine sweep */
+  content: ''; position: absolute; inset: 0 auto 0 -30%; width: 18%; background: rgba(255,255,255,.35);
+  transform: skewX(-20deg); opacity: 0;
+}
+.px-btn:hover::after { opacity: 1; animation: shine .5s steps(5) 1; }
+
+/* ---------- 5. SKILLS: label | bar | level on ONE row (fixes far-right bars) ---------- */
+.skill-list { display: grid; gap: 14px; }
+.skill { display: grid; grid-template-columns: minmax(110px, 200px) minmax(0, 1fr) 44px; gap: 16px; align-items: center; }
+.skill-name { font: 13px var(--font-label); letter-spacing: .08em; color: var(--ink); }
+.skill-bar { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; max-width: 420px; }
+.skill-bar i { height: 18px; background: var(--surface); box-shadow: 0 0 0 2px var(--ink); }
+.skill-bar i.on { background: var(--accent); }
+.skill.in-view .skill-bar i.on { animation: fill-pop .3s steps(3) backwards; animation-delay: calc(var(--n) * 70ms); }
+.skill-lvl { font: 12px var(--font-label); color: var(--accent-dark); text-align: right; }
+.tabs { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+
+/* ---------- 6. PROJECT CARDS: equal height, real titles, working buttons ---------- */
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 36px; align-items: stretch; }
+.card { display: flex; flex-direction: column; height: 100%; }
+.card .px-body { display: flex; flex-direction: column; flex: 1; gap: 12px; }
+.card-thumb { aspect-ratio: 16 / 10; overflow: hidden; background: var(--bg-check); box-shadow: 0 0 0 3px var(--ink); }
+.card-thumb canvas, .card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.card h3 { margin: 4px 0 0; font: 700 26px var(--font-display); color: var(--accent-dark); text-transform: uppercase; }
+.card p { margin: 0; font: 21px/1.25 var(--font-body); color: var(--ink); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { padding: 4px 8px; background: var(--surface); font: 11px var(--font-label); letter-spacing: .06em; box-shadow: 0 0 0 2px var(--ink); margin: 2px; }
+.card-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: auto; padding-top: 8px; }   /* buttons always pinned to the bottom */
+.card:hover .card-thumb { animation: glitch .25s steps(2) 1; }
+
+/* ---------- 7. MARQUEE conveyor (moving component) ---------- */
+.marquee { overflow: hidden; background: var(--accent); color: #fff; margin: 56px 0;
+  box-shadow: 0 -4px 0 0 var(--ink), 0 4px 0 0 var(--ink); }
+.marquee-track { display: flex; width: max-content; animation: marquee 30s steps(180) infinite; }
+.marquee-track span { padding: 14px 28px; font: 14px var(--font-label); letter-spacing: .14em; white-space: nowrap; }
+.marquee-track span::after { content: '\25C6'; margin-left: 56px; color: var(--hl, #F5C842); }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+/* ---------- 8. TIMELINE runner (scroll-linked via --progress 0..1) ---------- */
+.timeline { position: relative; padding-left: 56px; }
+.timeline::before { content: ''; position: absolute; left: 14px; top: 0; bottom: 0; width: 4px;
+  background: repeating-linear-gradient(to bottom, var(--ink) 0 8px, transparent 8px 16px); }
+.runner { position: absolute; left: 0; top: calc(var(--progress, 0) * (100% - 32px)); width: 32px; height: 32px; image-rendering: pixelated; }
+
+/* ---------- 9. ANIMATIONS (all stepped = frame-by-frame feel) ---------- */
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes letter-wave { 0%, 55%, 100% { transform: translateY(0); } 25% { transform: translateY(-10px); } }
+@keyframes shine { from { left: -30%; } to { left: 120%; } }
+@keyframes marquee { to { transform: translateX(-50%); } }
+@keyframes fill-pop { from { transform: scale(0); } to { transform: scale(1); } }
+@keyframes glitch { 0% { transform: translateX(0); } 50% { transform: translateX(-4px); } 100% { transform: translateX(0); } }
+@keyframes bob { 50% { transform: translateY(-6px); } }
+.float { animation: bob 2s steps(4) infinite; }
+
+/* ---------- 10. RESPONSIVE + REDUCED MOTION ---------- */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; gap: 32px; }
+  .skill { grid-template-columns: 1fr; gap: 6px; }
+  .skill-lvl { text-align: left; }
+  .nav a:not(.keep) { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-name span, .marquee-track, .float, .hero-kicker::before, .caret { animation: none !important; }
+  .px-btn:hover::after { animation: none; }
+  .hero-name.glitch { animation: none; }
+}
+
+/* ==========================================================================
+   11. NAME FX  (effects canvas lives around the hero name)
+   ========================================================================== */
+.name-fx { position: relative; display: block; padding: 36px 44px; margin: -36px -44px; cursor: crosshair; }
+.hero-name { position: relative; z-index: 1; }
+.hero-name.glitch { animation: name-glitch .3s steps(3) 1; }
+@keyframes name-glitch {
+  0%   { text-shadow: -6px 0 #00E5FF, 6px 0 #FF3D71, 8px 8px 0 var(--ink); transform: translateX(-4px); }
+  33%  { text-shadow: 6px 0 #00E5FF, -6px 0 #FF3D71, 8px 8px 0 var(--ink); transform: translateX(4px) skewX(-6deg); }
+  66%  { text-shadow: -3px 0 #00E5FF, 3px 0 #FF3D71, 8px 8px 0 var(--ink); transform: translateX(-2px); }
+  100% { transform: none; }
+}
+
+.name-caret {
+  display: inline-block;
+  width: 14px;
+  height: 0.85em;
+  margin-left: 4px;
+  background: var(--accent);
+  vertical-align: baseline;
+  animation: blink 0.8s steps(2) infinite;
+}
+
+@media (max-width: 600px) {
+  .name-fx { padding: 16px 8px; margin: -16px -8px; }
+}
+
+/* ==========================================================================
+   12. ALI: roaming golden orb + comic speech bubble (NOT a full-screen chat)
+   ========================================================================== */
+.ali {
+  position: fixed;
+  bottom: 16px;
+  left: 24px;
+  z-index: 90;
+  width: 96px;
+  height: 120px;
+  pointer-events: none;
+}
+.ali-btn {
+  pointer-events: auto;
+  display: block;
+  width: 96px;
+  height: 120px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.ali-btn canvas {
+  width: 96px;
+  height: 120px;
+  image-rendering: pixelated;
+  display: block;
+}
+.ali-btn:focus-visible { outline: 3px dashed var(--accent); outline-offset: 2px; }
+.ali-dot {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  width: 12px;
+  height: 12px;
+  background: #FF3D71;
+  box-shadow: 0 0 0 3px var(--ink);
+  animation: blink 1s steps(2) infinite;
+}
+.ali-bubble {
+  position: absolute;
+  left: 50%;
+  bottom: 128px;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: min(280px, calc(100vw - 32px));
+  pointer-events: auto;
+  padding: 12px 14px;
+  margin: 3px;
+  background: #fff;
+  color: #2E2A2A;
+  font: 20px/1.15 var(--font-body);
+  box-shadow: 0 -3px 0 0 #2E2A2A, 0 3px 0 0 #2E2A2A, -3px 0 0 0 #2E2A2A, 3px 0 0 0 #2E2A2A, 6px 6px 0 0 #2E2A2A;
+}
+.ali-bubble[hidden] { display: none; }
+.ali-bubble::before, .ali-bubble::after { content: ''; position: absolute; background: #fff; }
+.ali-bubble::before { left: calc(50% - 6px); bottom: -9px; width: 12px; height: 9px; box-shadow: -3px 0 0 #2E2A2A, 3px 0 0 #2E2A2A; }
+.ali-bubble::after { left: calc(50% - 3px); bottom: -18px; width: 6px; height: 9px; box-shadow: -3px 0 0 #2E2A2A, 3px 0 0 #2E2A2A, 0 3px 0 0 #2E2A2A; }
+.ali-bubble.is-thought { border-radius: 0; }
+.ali-bubble.is-shout { background: #FFE27A; }
+.ali-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.ali-chips button { font: 10px var(--font-label); padding: 6px 8px; border: 0; cursor: pointer; background: var(--surface); color: var(--ink); box-shadow: 0 0 0 2px var(--ink); }
+.ali-chips button:hover { background: var(--accent); color: #fff; }
+.ali-input-row { display: flex; gap: 4px; margin-top: 10px; }
+.ali-input-row input { flex: 1; padding: 4px 6px; font: 16px var(--font-body); border: 2px solid var(--ink); background: var(--surface); color: var(--ink); min-width: 0; }
+.ali-input-row button { font: 10px var(--font-label); padding: 4px 8px; border: 2px solid var(--ink); background: var(--accent); color: #fff; cursor: pointer; }
+.ali-bubble-text { min-height: 24px; white-space: pre-wrap; word-break: break-word; }
+@media (prefers-reduced-motion: reduce) { .ali-dot { animation: none; } }
+

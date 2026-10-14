@@ -1,0 +1,105 @@
+{
+  "profile": {
+    "name": "Pratham",
+    "title": "Backend Developer",
+    "tagline": "Backend systems, software architecture and AI-powered products.",
+    "location": "Gujarat, India",
+    "languages": ["Hindi", "English", "Gujarati"],
+    "about": [
+      "I'm a backend developer who builds APIs, designs software architecture and integrates AI into real products.",
+      "Currently a Backend Developer Intern at ScalerBit, working with Python and FastAPI."
+    ],
+    "education": [
+      {
+        "degree": "Diploma in Information Technology",
+        "school": "P P Savani University",
+        "year": "EDIT ME"
+      }
+    ],
+    "roles": ["Backend Development", "System Design", "AI Integration", "API Engineering"],
+    "stats": [
+      {"label": "Projects", "value": "EDIT ME"},
+      {"label": "Experience", "value": "EDIT ME"},
+      {"label": "Languages", "value": "3"}
+    ],
+    "socials": {
+      "github": "https://github.com/EDIT_ME",
+      "linkedin": "https://linkedin.com/in/EDIT_ME",
+      "email": "mailto:EDIT_ME@example.com"
+    },
+    "contact_email": "EDIT_ME@example.com",
+    "open_to_work": true
+  },
+  "skills": {
+    "Backend": [
+      {"name": "Python", "level": 9},
+      {"name": "FastAPI", "level": 9},
+      {"name": "Django", "level": 7},
+      {"name": "REST API Design", "level": 8}
+    ],
+    "Databases": [
+      {"name": "PostgreSQL", "level": 8},
+      {"name": "SQL", "level": 8}
+    ],
+    "DevOps": [
+      {"name": "Docker", "level": 7},
+      {"name": "Kubernetes", "level": 5},
+      {"name": "Git / GitHub", "level": 8}
+    ],
+    "AI/ML": [
+      {"name": "LLM Integration", "level": 8},
+      {"name": "NumPy", "level": 7},
+      {"name": "Pandas", "level": 7}
+    ],
+    "Tools": [
+      {"name": "Linux", "level": 6},
+      {"name": "Postman", "level": 7}
+    ]
+  },
+  "projects": [
+    {
+      "id": "cafeos",
+      "title": "CafeOS",
+      "category": "SaaS",
+      "description": "Cafe management platform: POS, kitchen display, inventory and profit tracking.",
+      "details": "EDIT ME — longer description shown in the project modal.",
+      "tech": ["FastAPI", "PostgreSQL", "React"],
+      "image": "/projects/cafeos.png",
+      "live": "",
+      "code": ""
+    },
+    {
+      "id": "splittab",
+      "title": "SplitTab",
+      "category": "SaaS",
+      "description": "Expense-splitting app for roommates and travelers with monthly settlement.",
+      "details": "EDIT ME — longer description shown in the project modal.",
+      "tech": ["FastAPI", "PostgreSQL"],
+      "image": "/projects/splittab.png",
+      "live": "",
+      "code": ""
+    },
+    {
+      "id": "project-3",
+      "title": "EDIT ME",
+      "category": "AI",
+      "description": "EDIT ME",
+      "details": "EDIT ME",
+      "tech": ["Python"],
+      "image": "/projects/placeholder.png",
+      "live": "",
+      "code": ""
+    }
+  ],
+  "experience": [
+    {
+      "role": "Backend Developer Intern",
+      "company": "ScalerBit",
+      "period": "EDIT ME",
+      "points": [
+        "Build and maintain backend services and APIs.",
+        "Design software architecture and integrate AI features into products."
+      ]
+    }
+  ]
+}

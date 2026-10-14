@@ -1,0 +1,107 @@
+@keyframes pop-in {
+  0% { transform: scale(0.9); }
+  50% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+@keyframes hop {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-4px); }
+  100% { transform: translateX(4px); }
+}
+
+@keyframes glitch {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(-4px, 2px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes drift {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-16px); }
+}
+
+@keyframes dots {
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+
+@keyframes fall {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(50vh); }
+}
+
+.section.is-in {
+  animation: pop-in 240ms steps(3) both;
+}
+
+.bounce-letter {
+  display: inline-block;
+}
+
+.bounce-letter:hover {
+  animation: hop 160ms steps(2);
+}
+
+.shake {
+  animation: shake 180ms steps(2);
+}
+
+.project-card:hover .thumb {
+  animation: glitch 200ms steps(2);
+}
+
+.floater {
+  animation: drift 3.2s steps(4) infinite alternate;
+}
+
+body.is-hidden .floater,
+body.is-hidden .cloud {
+  animation-play-state: paused;
+}
+
+.thought-dots i {
+  animation: dots 600ms steps(2) infinite;
+}
+
+.thought-dots i:nth-child(2) { animation-delay: 150ms; }
+.thought-dots i:nth-child(3) { animation-delay: 300ms; }
+
+.confetti i {
+  animation: fall 720ms steps(4) forwards;
+}
+
+@media (min-width: 1200px) {
+  .tilt-a { transform: rotate(-1deg); }
+  .tilt-b { transform: rotate(1deg); }
+  .tilt-a,
+  .tilt-b {
+    transition: transform 120ms steps(2);
+  }
+  .tilt-a:hover,
+  .tilt-b:hover {
+    transform: rotate(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .tilt-a,
+  .tilt-b,
+  .tilt-a:hover,
+  .tilt-b:hover {
+    transform: none;
+  }
+}

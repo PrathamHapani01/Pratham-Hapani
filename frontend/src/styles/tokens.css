@@ -1,0 +1,38 @@
+/* Peach headings use a deeper orange so text clears 4.5:1 on the cream background. */
+:root[data-theme="peach"] {
+  --bg: #f4dec0;
+  --bg-check: #edd3ae;
+  --surface: #fdefd6;
+  --ink: #2e2a2a;
+  --accent: #f26a38;
+  --accent-dark: #c94e22;
+  --accent-soft: #f9a97f;
+  --white: #ffffff;
+  --hl: #f5c842;
+  --heading: #8f3012;
+  --shadow: #2e2a2a;
+  --danger: #8f3012;
+  --titlebar: #c94e22;
+  --title-text: #ffffff;
+  --screen: #f4dec0;
+  --cloud: #ffffff;
+}
+
+:root[data-theme="blue"] {
+  --bg: #9fcbf2;
+  --bg-check: #8fbfea;
+  --surface: #dcebfa;
+  --ink: #1e2f8f;
+  --accent: #2c41b0;
+  --accent-dark: #16206b;
+  --accent-soft: #7fa6ec;
+  --white: #ffffff;
+  --hl: #ffd84d;
+  --heading: #1e2f8f;
+  --shadow: #16206b;
+  --danger: #8f3012;
+  --titlebar: #16206b;
+  --title-text: #ffffff;
+  --screen: #c5e4fb;
+  --cloud: #ffffff;
+}

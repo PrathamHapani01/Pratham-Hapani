@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" data-theme="peach">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pratham — Backend Developer</title>
+    <meta name="description" content="Portfolio of Pratham, a backend developer in Gujarat, India. APIs, system design, and AI integration." />
+    <meta name="theme-color" content="#F4DEC0" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta property="og:title" content="Pratham — Backend Developer" />
+    <meta property="og:description" content="Retro pixel portfolio. Backend systems, software architecture, and AI-powered products." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/og.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&family=Silkscreen&family=VT323&display=swap" rel="stylesheet" />
+    <script>
+      try {
+        var params = new URLSearchParams(location.search);
+        var queryTheme = params.get("theme");
+        var stored = localStorage.getItem("theme");
+        var theme = queryTheme === "blue" || queryTheme === "peach" ? queryTheme : (stored || "peach");
+        if (queryTheme === "blue" || queryTheme === "peach") localStorage.setItem("theme", theme);
+        document.documentElement.setAttribute("data-theme", theme === "blue" ? "blue" : "peach");
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "peach");
+      }
+    </script>
+  </head>
+  <body>
+    <noscript>This portfolio needs JavaScript to show the pixel interface.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

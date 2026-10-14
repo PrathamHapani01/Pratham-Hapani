@@ -1,0 +1,215 @@
+/* Old .ali-btn rules pin the sprite to 64px at 0,0 and hide it. */
+.ali {
+  position: fixed;
+  z-index: 90;
+  bottom: 16px;
+  width: 96px;
+  height: 120px;
+  pointer-events: none;
+}
+
+.ali .ali-btn {
+  position: relative;
+  left: auto;
+  top: auto;
+  width: 96px;
+  height: 120px;
+}
+
+.ali .ali-btn canvas {
+  width: 96px;
+  height: 120px;
+}
+
+.px-title-text {
+  margin: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-shadow: none;
+  line-height: inherit;
+}
+
+.hero-name .hero-word {
+  display: inline;
+  animation: none;
+}
+
+.hero-name {
+  font-size: clamp(40px, 7vw, 84px);
+  white-space: nowrap;
+}
+
+.site-main {
+  padding-top: 12px;
+}
+
+.nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-face {
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--ink);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-tools {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.nav .px-btn.icon-btn {
+  padding: 8px;
+  margin: 0;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.nav-burger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  border: 3px solid var(--ink);
+  background: var(--surface);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-burger span {
+  display: block;
+  width: 18px;
+  height: 3px;
+  background: var(--ink);
+}
+
+.timeline {
+  border-left: 0;
+  list-style: none;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.scene-crt.crt-bezel {
+  padding: 16px;
+}
+
+.send-slot {
+  position: relative;
+  display: inline-block;
+}
+
+.paper-plane {
+  position: absolute;
+  left: 12px;
+  top: 8px;
+  width: 12px;
+  height: 8px;
+  background: var(--white);
+  box-shadow: 12px 4px 0 var(--accent), 6px -6px 0 var(--hl);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.paper-plane.is-go {
+  opacity: 1;
+  animation: plane 700ms steps(6) forwards;
+}
+
+@keyframes plane {
+  to { transform: translate(140px, -72px); opacity: 0; }
+}
+
+.px-divider {
+  position: relative;
+  height: 32px;
+  width: min(1200px, calc(100% - 48px));
+  margin: 8px auto;
+  overflow: hidden;
+}
+
+.px-divider i {
+  position: absolute;
+  bottom: 0;
+  width: 28px;
+  height: 12px;
+  background: var(--accent-dark);
+  box-shadow: 8px -8px 0 var(--accent), 16px -8px 0 var(--accent);
+}
+
+.bird {
+  position: absolute;
+  top: 2px;
+  width: 14px;
+  height: 8px;
+  background: var(--ink);
+  box-shadow: 6px -4px 0 var(--ink), 10px 0 0 var(--hl);
+  animation: fly 12s steps(12) infinite;
+}
+
+@keyframes fly {
+  from { left: -24px; }
+  to { left: 100%; }
+}
+
+body.is-hidden .bird,
+body.is-hidden .marquee-track {
+  animation-play-state: paused;
+}
+
+.nav a[aria-current="page"] {
+  box-shadow: inset 0 -4px 0 0 var(--accent);
+}
+
+@media (max-width: 900px) {
+  .nav {
+    height: auto;
+    min-height: 60px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .nav-burger {
+    display: inline-flex;
+    margin-left: auto;
+  }
+
+  .nav-links {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav.is-open .nav-links {
+    display: flex;
+  }
+
+  .nav.is-open a:not(.keep) {
+    display: inline-flex;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bird,
+  .paper-plane.is-go {
+    animation: none;
+  }
+}
