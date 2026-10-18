@@ -148,7 +148,7 @@ export default function App() {
           <>
             <Hero profile={data.profile} theme={theme} />
             <PixelDivider />
-            <About profile={data.profile} />
+            <About profile={data.profile} experience={data.experience} />
             <Marquee skills={data.skills} />
             <Skills skills={data.skills} />
             <PixelDivider />
