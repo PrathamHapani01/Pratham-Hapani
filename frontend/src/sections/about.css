@@ -1,5 +1,14 @@
 /* All selectors are prefixed with .about so nothing outside this section is affected. */
-.about { scroll-margin-top: 112px; margin: 56px 0; color: var(--ink, #2E2A2A); }
+.about {
+  width: min(1200px, calc(100% - 48px));
+  margin: 48px auto;
+  scroll-margin-top: 112px;
+  color: var(--ink, #2E2A2A);
+}
+
+@media (max-width: 767px) {
+  .about { width: min(1200px, calc(100% - 32px)); }
+}
 
 .about-window {
   margin: 4px; background: var(--surface, #FDEFD6);
