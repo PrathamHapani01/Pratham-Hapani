@@ -23,11 +23,11 @@
       {"label": "Languages", "value": "3"}
     ],
     "socials": {
-      "github": "https://github.com/EDIT_ME",
-      "linkedin": "https://linkedin.com/in/EDIT_ME",
-      "email": "mailto:EDIT_ME@example.com"
+      "github": "https://github.com/PrathamHapani01",
+      "linkedin": "https://www.linkedin.com/in/pratham-hapani-395b18363/",
+      "email": "mailto:prathamhapani.082008@gmail.com"
     },
-    "contact_email": "EDIT_ME@example.com",
+    "contact_email": "prathamhapani.082008@gmail.com",
     "open_to_work": true
   },
   "skills": {
@@ -58,34 +58,34 @@
   },
   "projects": [
     {
-      "id": "cafeos",
-      "title": "CafeOS",
-      "category": "SaaS",
-      "description": "Cafe management platform: POS, kitchen display, inventory and profit tracking.",
-      "details": "EDIT ME — longer description shown in the project modal.",
-      "tech": ["FastAPI", "PostgreSQL", "React"],
-      "image": "/projects/cafeos.png",
+      "id": "ecommerce-api",
+      "title": "E-commerce Backend API",
+      "category": "Backend",
+      "description": "Backend API for an online store: products, cart, orders, and checkout.",
+      "details": "Backend API for an online store: products, cart, orders, and checkout.",
+      "tech": ["Python", "FastAPI"],
+      "image": "/projects/placeholder.png",
       "live": "",
       "code": ""
     },
     {
-      "id": "splittab",
-      "title": "SplitTab",
-      "category": "SaaS",
-      "description": "Expense-splitting app for roommates and travelers with monthly settlement.",
-      "details": "EDIT ME — longer description shown in the project modal.",
-      "tech": ["FastAPI", "PostgreSQL"],
-      "image": "/projects/splittab.png",
+      "id": "job-portal",
+      "title": "Job Portal & Recruitment Management System",
+      "category": "Backend",
+      "description": "Recruitment backend for job listings, applications, and hiring workflows.",
+      "details": "Recruitment backend for job listings, applications, and hiring workflows.",
+      "tech": ["Python", "FastAPI"],
+      "image": "/projects/placeholder.png",
       "live": "",
       "code": ""
     },
     {
-      "id": "project-3",
-      "title": "EDIT ME",
-      "category": "AI",
-      "description": "EDIT ME",
-      "details": "EDIT ME",
-      "tech": ["Python"],
+      "id": "task-api",
+      "title": "Task Management & Project Collaboration API",
+      "category": "Backend",
+      "description": "API for projects, tasks, and team collaboration.",
+      "details": "API for projects, tasks, and team collaboration.",
+      "tech": ["Python", "FastAPI"],
       "image": "/projects/placeholder.png",
       "live": "",
       "code": ""
