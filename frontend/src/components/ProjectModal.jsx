@@ -22,7 +22,10 @@ export default function ProjectModal({ project, onClose }) {
     };
   }, [onClose]);
 
+  const title = cleanText(project.title, "Project");
   const details = cleanText(project.details, cleanText(project.description, "More details coming soon."));
+  const hasLive = Boolean(project.live);
+  const hasCode = Boolean(project.code);
 
   return (
     <div className="modal-back" onMouseDown={onClose}>
@@ -33,7 +36,7 @@ export default function ProjectModal({ project, onClose }) {
         aria-labelledby="project-title"
         onMouseDown={(event) => event.stopPropagation()}
       >
-        <PixelWindow title="PROJECT.VIEW" titleAs="p">
+        <PixelWindow title="PROJECT.VIEW" titleAs="p" onClose={onClose}>
           <div className="modal-copy">
             <img
               className="thumb"
@@ -43,7 +46,7 @@ export default function ProjectModal({ project, onClose }) {
                 event.currentTarget.src = "/projects/placeholder.png";
               }}
             />
-            <h2 id="project-title" className="card-title">{project.title}</h2>
+            <h2 id="project-title" className="project-modal-title">{title}</h2>
             <p>{details}</p>
             <div className="chip-row">
               {(project.tech || []).map((tech) => (
@@ -51,15 +54,15 @@ export default function ProjectModal({ project, onClose }) {
               ))}
             </div>
             <div className="btn-row">
-              {project.live ? (
+              {hasLive ? (
                 <PixelButton href={project.live} target="_blank" rel="noreferrer">Live</PixelButton>
               ) : (
-                <PixelButton disabled title="EDIT ME">Live</PixelButton>
+                <span className="px-btn" aria-disabled="true">Soon</span>
               )}
-              {project.code ? (
+              {hasCode ? (
                 <PixelButton href={project.code} variant="secondary" target="_blank" rel="noreferrer">Code</PixelButton>
               ) : (
-                <PixelButton variant="secondary" disabled title="EDIT ME">Code</PixelButton>
+                <span className="px-btn secondary" aria-disabled="true">Soon</span>
               )}
               <button ref={closeRef} type="button" className="px-btn secondary" onClick={onClose}>
                 Close

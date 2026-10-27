@@ -31,6 +31,15 @@
   line-height: inherit;
 }
 
+.project-modal-title {
+  margin: 0;
+  font: 700 28px/1.05 "Pixelify Sans", Silkscreen, monospace;
+  color: var(--accent-dark, #c94e22);
+  text-transform: uppercase;
+  text-shadow: none;
+  letter-spacing: -0.02em;
+}
+
 .hero-name .hero-word {
   display: inline;
   animation: none;
