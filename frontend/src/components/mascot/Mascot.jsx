@@ -3,12 +3,14 @@ import { createAli } from "../../aliSprite";
 import { sendChat } from "../../api/client";
 import { blip } from "../../sound";
 
-const DEFAULT_SUGGESTIONS = ["Who is Pratham?", "Show projects", "How to hire?"];
+const DEFAULT_SUGGESTIONS = ["Who is Pratham?", "Show projects", "How to hire?", "Agentic AI skills?"];
 
 const DEFAULT_REPLIES = {
-  "Who is Pratham?": "A backend dev who builds APIs and AI features. Nice to meet you!",
-  "Show projects": "CafeOS and SplitTab are the big ones. Scroll down to Projects!",
+  "Who is Pratham?": "A backend dev who builds APIs and Agentic AI features. Nice to meet you!",
+  "Show projects": "Check the projects window — APIs, portals, and AI-powered builds!",
   "How to hire?": "Use the contact form at the bottom. He replies fast!",
+  "Skills?": "Python, FastAPI, RAG, LangChain, LangGraph, Gemini and more. Open Skills!",
+  "Agentic AI skills?": "RAG, LangChain, LangGraph, LangSmith, Gemini API, agents and prompts!",
 };
 
 export default function Mascot({ hidden, section: _section, theme: _theme, reduced }) {
@@ -265,10 +267,10 @@ export default function Mascot({ hidden, section: _section, theme: _theme, reduc
       else if (data.mood === "surprised") setState("surprised");
       else if (data.mood === "wave") setState("dance");
       else setState("talk");
-    } catch {
+    } catch (err) {
       setIsThinking(false);
       setBubbleVariant("shout");
-      setBubbleText("My brain is rebooting... try asking one of the quick buttons!");
+      setBubbleText(err?.message || "My brain is rebooting... try a quick button!");
       setSuggestions(DEFAULT_SUGGESTIONS);
       setState("surprised");
     }

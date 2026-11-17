@@ -428,7 +428,7 @@ def pick_mood(text: str) -> str:
 
 @app.post("/api/chat", response_model=ChatOut)
 def chat(payload: ChatIn, request: Request):
-    rate_limit(request, "chat", limit=20, window=300)  # 20 msgs / 5 min / IP
+    rate_limit(request, "chat", limit=60, window=300)  # 60 msgs / 5 min / IP
 
     base = fallback_reply(payload.message)
 

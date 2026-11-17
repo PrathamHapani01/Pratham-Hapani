@@ -67,15 +67,27 @@ export async function sendContact(body) {
 }
 
 export async function sendChat(body) {
-  const res = await request(
-    "/api/chat",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    },
-    20000,
-  );
+  let res;
+  try {
+    res = await request(
+      "/api/chat",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      },
+      60000,
+    );
+  } catch (err) {
+    if (err?.name === "AbortError") {
+      const timeout = new Error("Ali is still thinking — try again in a sec!");
+      timeout.status = 408;
+      throw timeout;
+    }
+    const network = new Error("Can't reach Ali's brain. Is the backend running?");
+    network.status = 0;
+    throw network;
+  }
   if (res.status === 429) {
     const err = new Error("Too many questions! Give me a sec.");
     err.status = 429;
