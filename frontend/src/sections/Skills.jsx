@@ -2,7 +2,7 @@ import { useState } from "react";
 import PixelWindow from "../components/PixelWindow";
 import SkillBar from "../components/SkillBar";
 
-const ORDER = ["Backend", "Databases", "DevOps", "AI/ML", "Tools"];
+const ORDER = ["Backend", "Databases", "DevOps", "AI/ML", "Agentic AI", "Tools"];
 
 export default function Skills({ skills }) {
   const names = ORDER.filter((name) => skills?.[name]).concat(

@@ -223,7 +223,7 @@ export default function Mascot({ hidden, section: _section, theme: _theme, reduc
     setShowDot(false);
     setOpen(true);
     setBubbleVariant("speech");
-    setBubbleText("Hi! I am Ali. Ask me anything about Pratham!");
+    setBubbleText("Hi! I'm Ali — Pratham's personal agent. Ask me about him!");
     setSuggestions(DEFAULT_SUGGESTIONS);
   }
 
@@ -327,8 +327,8 @@ export default function Mascot({ hidden, section: _section, theme: _theme, reduc
               type="text"
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
-              placeholder="Ask anything..."
-              aria-label="Ask Ali a question"
+              placeholder="Ask about Pratham..."
+              aria-label="Ask Ali about Pratham"
             />
             <button type="submit">SEND</button>
           </form>

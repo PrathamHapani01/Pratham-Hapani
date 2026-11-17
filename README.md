@@ -19,7 +19,9 @@ npm install
 cp .env.example .env          # Windows: copy .env.example .env
 ```
 
-Leave `ANTHROPIC_API_KEY` empty to use Ali's built-in replies. The key must stay in `backend/.env` only.
+Leave `GEMINI_API_KEY` empty to use Ali's built-in replies. The key must stay in `backend/.env` only.
+
+Ali uses **Gemini + LangChain RAG** over files in `backend/docs/` (start with `resume.md`). He only answers about Pratham; off-topic AI questions get a personal-agent deflection.
 
 ## Run
 
@@ -40,8 +42,9 @@ On Windows, activate the venv first, or run `backend\.venv\Scripts\python.exe -m
 Search for `EDIT ME` and `EDIT_ME`.
 
 - `backend/main.py` — `PROFILE`, `SKILLS`, `PROJECTS`, `EXPERIENCE` (real links, dates, descriptions, honest skill levels)
+- `backend/docs/resume.md` — Ali’s RAG knowledge (edit this when your resume changes)
+- `backend/docs/resume.pdf` — optional PDF download for `/api/resume` (see `backend/docs/README.md`)
 - `frontend/public/projects/` — replace the placeholder screenshots
-- `backend/resume.pdf` — add your resume (served at `/api/resume`)
 - Social links and email in `PROFILE["socials"]`
 
 Regenerate the pixel images with `python scripts/make_assets.py` if you want a fresh avatar, cursor, or favicon.

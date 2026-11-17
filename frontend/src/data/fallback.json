@@ -16,7 +16,7 @@
         "year": "EDIT ME"
       }
     ],
-    "roles": ["Backend Development", "System Design", "AI Integration", "API Engineering"],
+    "roles": ["Backend Development", "System Design", "Agentic AI", "API Engineering"],
     "stats": [
       {"label": "Projects", "value": "EDIT ME"},
       {"label": "Experience", "value": "EDIT ME"},
@@ -50,6 +50,16 @@
       {"name": "LLM Integration", "level": 8},
       {"name": "NumPy", "level": 7},
       {"name": "Pandas", "level": 7}
+    ],
+    "Agentic AI": [
+      {"name": "RAG", "level": 8},
+      {"name": "LangChain", "level": 8},
+      {"name": "LangGraph", "level": 7},
+      {"name": "LangSmith", "level": 6},
+      {"name": "Gemini API", "level": 8},
+      {"name": "Vector Databases", "level": 7},
+      {"name": "Tool Calling / Agents", "level": 7},
+      {"name": "Prompt Engineering", "level": 8}
     ],
     "Tools": [
       {"name": "Linux", "level": 6},

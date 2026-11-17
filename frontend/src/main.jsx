@@ -5,6 +5,7 @@ import "./styles/tokens.css";
 import "./styles/base.css";
 import "./styles/pixel.css";
 import "./styles/animations.css";
+import "./styles/loading.css";
 import "./styles/pixel-fixes.css";
 import "./styles/overrides.css";
 

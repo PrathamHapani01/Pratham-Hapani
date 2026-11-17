@@ -6,7 +6,7 @@ export function apiUrl(path) {
   return `${API}${path}`;
 }
 
-async function request(path, options = {}, timeout = 8000) {
+async function request(path, options = {}, timeout = 20000) {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeout);
   try {

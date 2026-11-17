@@ -12,12 +12,13 @@ Endpoints:
     GET  /api/skills
     GET  /api/projects
     GET  /api/experience
-    GET  /api/resume              -> serves ./resume.pdf if present
+    GET  /api/resume              -> serves docs/resume.pdf (or ./resume.pdf)
     POST /api/contact             -> stores message in SQLite
     GET  /api/admin/messages      -> header X-Admin-Token required
-    POST /api/chat                -> Ali mascot (short comic-bubble replies)
+    POST /api/chat                -> Ali mascot (Gemini + LangChain RAG over docs/)
 
 EDIT the PROFILE / SKILLS / PROJECTS / EXPERIENCE blocks below with your real data.
+Also keep backend/docs/resume.md updated — Ali answers from those docs only.
 """
 
 import os
@@ -41,11 +42,13 @@ try:
 except ImportError:  # python-dotenv optional
     pass
 
+import rag as ali_rag
+
 # ----------------------------------------------------------------------------
 # Config
 # ----------------------------------------------------------------------------
-ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
-CHAT_MODEL = os.getenv("CHAT_MODEL", "claude-sonnet-5-5")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "") or os.getenv("GOOGLE_API_KEY", "")
+CHAT_MODEL = os.getenv("CHAT_MODEL", "gemini-2.0-flash")
 MASCOT_NAME = os.getenv("MASCOT_NAME", "Ali")
 ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "")
 DB_PATH = os.getenv("DB_PATH", "portfolio.db")
@@ -75,7 +78,7 @@ PROFILE = {
             "year": "EDIT ME",
         }
     ],
-    "roles": ["Backend Development", "System Design", "AI Integration", "API Engineering"],
+    "roles": ["Backend Development", "System Design", "Agentic AI", "API Engineering"],
     "stats": [
         {"label": "Projects", "value": "EDIT ME"},
         {"label": "Experience", "value": "EDIT ME"},
@@ -110,6 +113,16 @@ SKILLS = {
         {"name": "LLM Integration", "level": 8},
         {"name": "NumPy", "level": 7},
         {"name": "Pandas", "level": 7},
+    ],
+    "Agentic AI": [
+        {"name": "RAG", "level": 8},
+        {"name": "LangChain", "level": 8},
+        {"name": "LangGraph", "level": 7},
+        {"name": "LangSmith", "level": 6},
+        {"name": "Gemini API", "level": 8},
+        {"name": "Vector Databases", "level": 7},
+        {"name": "Tool Calling / Agents", "level": 7},
+        {"name": "Prompt Engineering", "level": 8},
     ],
     "Tools": [
         {"name": "Linux", "level": 6},
@@ -229,6 +242,9 @@ def init_db() -> None:
 
 init_db()
 
+# Build Ali's resume RAG index once at startup (no-op without GEMINI_API_KEY).
+ali_rag.build_index()
+
 # ----------------------------------------------------------------------------
 # Schemas
 # ----------------------------------------------------------------------------
@@ -265,7 +281,14 @@ class ChatOut(BaseModel):
 # ----------------------------------------------------------------------------
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "mascot": MASCOT_NAME, "ai_enabled": bool(ANTHROPIC_API_KEY)}
+    rag_status = ali_rag.status()
+    return {
+        "status": "ok",
+        "mascot": MASCOT_NAME,
+        "ai_enabled": bool(GEMINI_API_KEY),
+        "rag": rag_status,
+        "model": CHAT_MODEL,
+    }
 
 
 @app.get("/api/profile")
@@ -290,9 +313,12 @@ def get_experience():
 
 @app.get("/api/resume")
 def get_resume():
-    path = Path("resume.pdf")
-    if not path.exists():
-        raise HTTPException(status_code=404, detail="Resume not uploaded yet.")
+    path = ali_rag.find_resume_pdf()
+    if not path:
+        raise HTTPException(
+            status_code=404,
+            detail="Resume not uploaded yet. Add docs/resume.pdf (or resume.md for Ali chat).",
+        )
     return FileResponse(path, media_type="application/pdf", filename="Pratham_Resume.pdf")
 
 
@@ -324,32 +350,36 @@ def admin_messages(x_admin_token: str = Header(default="")):
 
 
 # ----------------------------------------------------------------------------
-# Ali (AI mascot) — short, comic-bubble style replies
+# Ali (AI mascot) — Gemini + LangChain RAG over docs/, comic-bubble replies
 # ----------------------------------------------------------------------------
-def build_system_prompt() -> str:
-    projects = "; ".join(f"{p['title']} ({p['description']})" for p in PROJECTS)
-    skills = ", ".join(s["name"] for group in SKILLS.values() for s in group)
-    return f"""You are {MASCOT_NAME}, a tiny playful pixel mascot living on {PROFILE['name']}'s portfolio website.
-You talk in comic speech bubbles, so keep every reply SHORT: max 2 sentences and under 35 words.
-Tone: friendly, cheeky, retro-game vibe. Plain text only: no markdown, no lists, no emoji.
-Only talk about {PROFILE['name']}, this portfolio, his work, skills, projects, experience and how to contact or hire him.
-If asked something unrelated, joke briefly and steer back. If you don't know a fact, say so and suggest the contact form. Never invent facts.
-
-FACTS
-Name: {PROFILE['name']} | Title: {PROFILE['title']} | Location: {PROFILE['location']}
-About: {' '.join(PROFILE['about'])}
-Education: {', '.join(e['degree'] + ' at ' + e['school'] for e in PROFILE['education'])}
-Languages: {', '.join(PROFILE['languages'])}
-Skills: {skills}
-Projects: {projects}
-Experience: {', '.join(e['role'] + ' at ' + e['company'] for e in EXPERIENCE)}
-Open to work: {PROFILE['open_to_work']} | Contact email: {PROFILE['contact_email']}
-"""
-
-
 def fallback_reply(message: str) -> ChatOut:
     """Rule-based answers used when no API key is set or the AI call fails."""
     m = message.lower()
+    if any(
+        w in m
+        for w in (
+            "chatgpt",
+            "write code",
+            "write a",
+            "write me",
+            "sorting algorithm",
+            "weather",
+            "homework",
+            "poem",
+            "joke",
+            "translate",
+            "what is ai",
+            "are you gemini",
+            "are you chatgpt",
+            "fix my",
+            "debug my",
+        )
+    ) and "pratham" not in m:
+        return ChatOut(
+            reply=ali_rag.OFF_TOPIC_REPLY,
+            mood="surprised",
+            suggestions=["Who is Pratham?", "Show projects", "How to hire?"],
+        )
     if any(w in m for w in ("hire", "contact", "email", "job", "work with", "reach")):
         return ChatOut(
             reply="Want to team up? Use the contact form and Pratham will reply fast!",
@@ -379,7 +409,7 @@ def fallback_reply(message: str) -> ChatOut:
             action="scroll:about",
         )
     return ChatOut(
-        reply="Hmm, my pixels are confused! Ask me about Pratham, projects or skills.",
+        reply="I'm Ali — Pratham's personal agent. Ask me about Pratham, projects or skills!",
         mood="surprised",
         suggestions=["Who is Pratham?", "Show projects", "How to hire?"],
     )
@@ -387,9 +417,11 @@ def fallback_reply(message: str) -> ChatOut:
 
 def pick_mood(text: str) -> str:
     t = text.lower()
+    if "personal agent" in t or "another ai" in t:
+        return "surprised"
     if "!" in t:
         return "happy"
-    if "sorry" in t or "don't know" in t:
+    if "sorry" in t or "don't know" in t or "don't have" in t:
         return "sad"
     return "happy"
 
@@ -398,30 +430,21 @@ def pick_mood(text: str) -> str:
 def chat(payload: ChatIn, request: Request):
     rate_limit(request, "chat", limit=20, window=300)  # 20 msgs / 5 min / IP
 
-    if not ANTHROPIC_API_KEY:
-        return fallback_reply(payload.message)
+    base = fallback_reply(payload.message)
+
+    if not GEMINI_API_KEY:
+        return base
 
     try:
-        import anthropic
-
-        client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
-        messages = [{"role": t.role, "content": t.content} for t in payload.history[-6:]]
+        history = [{"role": t.role, "content": t.content} for t in payload.history[-6:]]
         user_text = payload.message
         if payload.section:
             user_text += f"\n(The visitor is currently viewing the '{payload.section}' section.)"
-        messages.append({"role": "user", "content": user_text})
 
-        resp = client.messages.create(
-            model=CHAT_MODEL,
-            max_tokens=160,
-            system=build_system_prompt(),
-            messages=messages,
-        )
-        text = "".join(b.text for b in resp.content if getattr(b, "type", "") == "text").strip()
+        text = ali_rag.ask_ali(user_text, history=history)
         if not text:
-            return fallback_reply(payload.message)
+            return base
 
-        base = fallback_reply(payload.message)  # reuse its action / suggestions
         return ChatOut(
             reply=text[:300],
             mood=pick_mood(text),
@@ -430,4 +453,4 @@ def chat(payload: ChatIn, request: Request):
         )
     except Exception:
         # Never break the mascot: degrade gracefully.
-        return fallback_reply(payload.message)
+        return base

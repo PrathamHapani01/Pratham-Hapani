@@ -5,9 +5,9 @@ import { loadPortfolio } from "./api/client";
 import { setSoundEnabled } from "./sound";
 import Navbar from "./components/Navbar";
 import FloatingDecor from "./components/FloatingDecor";
-import PixelWindow from "./components/PixelWindow";
 import ProjectModal from "./components/ProjectModal";
 import Confetti from "./components/Confetti";
+import CreativeLoading from "./components/CreativeLoading";
 import Mascot from "./components/mascot/Mascot";
 import Marquee from "./components/Marquee";
 import PixelDivider from "./components/PixelDivider";
@@ -20,16 +20,6 @@ import Contact from "./sections/Contact";
 import Footer from "./sections/Footer";
 
 const KONAMI = ["arrowup", "arrowup", "arrowdown", "arrowdown", "arrowleft", "arrowright", "arrowleft", "arrowright", "b", "a"];
-
-function Loading() {
-  return (
-    <div className="loading-wrap">
-      <PixelWindow title="LOADING..." titleAs="p">
-        <p className="load-text">LOADING...</p>
-      </PixelWindow>
-    </div>
-  );
-}
 
 export default function App() {
   const { theme, toggle } = useTheme();
@@ -144,7 +134,7 @@ export default function App() {
       />
       <FloatingDecor reduced={reduced} />
       <main id="main" className="site-main">
-        {loading || !data ? <Loading /> : (
+        {loading || !data ? <CreativeLoading /> : (
           <>
             <Hero profile={data.profile} theme={theme} />
             <PixelDivider />
