@@ -1,6 +1,5 @@
 import './about.css';
-
-const API = import.meta.env.VITE_API_URL || '';
+import { apiUrl } from '../api/client';
 
 function AliAvatar({ size = 236 }) {
   return (
@@ -90,7 +89,7 @@ export default function About({ profile, experience = [] }) {
             )}
 
             <div className="about-actions">
-              <a className="about-btn" href={`${API}/api/resume`}>Download resume</a>
+              <a className="about-btn" href={apiUrl('/api/resume')}>Download resume</a>
               <a className="about-btn about-btn--ghost" href="#contact">Hire me</a>
             </div>
           </div>

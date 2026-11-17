@@ -52,8 +52,8 @@ Regenerate the pixel images with `python scripts/make_assets.py` if you want a f
 ## Deploy
 
 - Backend: Docker image `python:3.12-slim` on Render, Railway, Fly.io, or a VPS. Set the env vars from `backend/.env.example` on the host. Mount a volume for `portfolio.db`, or move to PostgreSQL.
-- Frontend: Vercel, Netlify, or Cloudflare Pages. Set `VITE_API_URL` to the deployed backend.
-- Set `ALLOWED_ORIGINS` to the deployed frontend URL only.
+- Frontend: Vercel, Netlify, or Cloudflare Pages. Set `VITE_API_URL` to the deployed backend **with no trailing slash** (e.g. `https://api.example.com`, not `...com/`).
+- Set `ALLOWED_ORIGINS` on the backend to the deployed frontend URL only (no trailing slash).
 - Serve the backend over HTTPS. The rate limiter is in-memory; use Redis if you run more than one instance.
 
 ## Themes

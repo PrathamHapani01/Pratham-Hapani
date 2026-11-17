@@ -53,7 +53,7 @@ MASCOT_NAME = os.getenv("MASCOT_NAME", "Ali")
 ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "")
 DB_PATH = os.getenv("DB_PATH", "portfolio.db")
 ALLOWED_ORIGINS = [
-    o.strip()
+    o.strip().rstrip("/")
     for o in os.getenv("ALLOWED_ORIGINS", "http://localhost:5173,http://localhost:3000").split(",")
     if o.strip()
 ]
@@ -182,11 +182,25 @@ EXPERIENCE = [
 # App + CORS
 # ----------------------------------------------------------------------------
 app = FastAPI(title="Pixel Portfolio API", version="1.0.0")
+
+
+@app.middleware("http")
+async def collapse_double_slashes(request: Request, call_next):
+    """Accept //api/... from misconfigured VITE_API_URL trailing slashes."""
+    path = request.scope.get("path") or ""
+    if "//" in path:
+        cleaned = "/" + "/".join(part for part in path.split("/") if part)
+        request.scope["path"] = cleaned
+        if "raw_path" in request.scope:
+            request.scope["raw_path"] = cleaned.encode("ascii")
+    return await call_next(request)
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
     allow_credentials=False,
-    allow_methods=["GET", "POST"],
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["Content-Type", "X-Admin-Token"],
 )
 

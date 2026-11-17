@@ -1,9 +1,11 @@
 import fallback from "../data/fallback.json";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:8000";
+/** Strip trailing slashes so `https://api.example.com/` + `/api/x` never becomes `//api/x`. */
+const API = String(import.meta.env.VITE_API_URL || "http://localhost:8000").replace(/\/+$/, "");
 
 export function apiUrl(path) {
-  return `${API}${path}`;
+  const suffix = path.startsWith("/") ? path : `/${path}`;
+  return `${API}${suffix}`;
 }
 
 async function request(path, options = {}, timeout = 20000) {
